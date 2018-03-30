@@ -1,0 +1,13 @@
+Définir tableau_Joueur (3*3)
+Définir tableau_Ordi (3*3)
+
+Fonction mouvement_joueur($ligne, $colonne)
+  tableau_Joueur[$ligne][$colonne] = "X"
+FinFonction
+
+Fonction Evaluer_prochain_coup_joueur()
+  définir $i, $j comme Entier
+  définit $encore comme booléen
+  
+  
+FinFonction

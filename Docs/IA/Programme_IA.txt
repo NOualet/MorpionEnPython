@@ -1,0 +1,682 @@
+
+
+////
+Principe de fonctionnement :
+
+Le programme IA regarde les meilleurs coups de l'humain (via la fonction Examiner_coup_humain). Il regarde à combien de coups le joueur humain  se trouve de la victoire.
+Une fois ce nombre trouvé, l'IA calcule le nombre de coup avant la victoire de l'ordinateur (via la fonction examiner_coup_ordinateur) pour chacune des case disponibles (cad les cases n'ayant ni X ni O)
+
+Enfin après ces 2 traitements, la fonction cherche la case ayant le nombre le plus bas (qui correspond au meilleur coup possible pour jouer en tant qu'ordinateur)
+ 
+
+
+
+/////
+
+Fonction Intelligence_Artificielle($Tab = Tableau d'entier de 3*3)
+  examiner_coup_humain($Tab)
+  examiner_coup_ordinateur($Tab)
+  $Valeur = 100 
+  $i_trouve = 2, $j_trouve = 2
+  for $i = 1 to 3
+    for $j = 1 to 3
+      if $tab[i][j] <> "X" and $tab[$i] [$j] <> "O" then
+        if $tab[$i] [$j] < $valeur then
+          $valeur = $tab[$i] [$j]
+          $i_trouve = $i
+          $j_trouve = $j
+      endif
+    next
+  next
+  // On modifie via l'interface la valeur du bouton situé en $i_trouve et $j_trouve avec la valeur 0 
+FinFonction
+
+
+fonction examiner_coup_ordinateur($Tab = Tableau d'entier de 3*3) 
+  // On fait le même raisonnement par rapport à l'étude 
+  // des coups possibles du joueur humain
+  // La seule différence étant que l'on retranche 1 au résultat obtenu
+  // afin que l'Intelligence Artificielle préfére le point qui fera gagner 
+  // l'ordinateur
+  //
+  // exemple : si prochain meilleur coup humain fera gagner l'homme (c'est à dire la valeur = 1)
+  // et que l'ordinateur détecte qu'en jouant le coup X,Y - X étant la ligne et Y la colonne)
+  // la partie est gagné alors il faut mettre dans cette cellule la valeur 0
+  
+  Pour $i = 1 to 3
+    Pour $j = 1 to 3
+      Select
+        Cas $i = 1 // Première ligne
+          Select 
+            Cas $j = 1 // Première colonne
+              Si $tab[1][1] == '-' alors
+                $rc = Traitement_Ligne(1, 1, "0") - 1 
+                if $rc < $tab[1][1] alors 
+                  $tab[1][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(1,1, "0") - 1
+                if $rc < $tab[1][1] alors 
+                  $tab[1][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                // On va calculer également la diagonale
+                //======================================
+                $rc = Traitement_Diagonale(1, 1, "O") - 1
+                if $rc < $tab[1][1] alors 
+                  $tab[1][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+            Cas $j = 2 // Seconde colonne
+              Si $tab[1][2] == '-' alors
+                $rc = Traitement_Ligne(1, 2, "0") - 1 
+                if $rc < $tab[1][2] alors 
+                  $tab[1][2] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(1,2, "0")
+                if $rc < $tab[1][2] alors 
+                  $tab[1][2] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+            Cas $j = 3 // Troisième colonne
+              Si $tab[1][3] == '-' alors
+                $rc = Traitement_Ligne(1, 3, "0") - 1 
+                if $rc < $tab[1][3] alors 
+                  $tab[1][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(1,3, "0")
+                if $rc < $tab[1][3] alors 
+                  $tab[1][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(1, 3, "0")
+              if $rc < $tab[1][3] alors 
+                  $tab[1][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+              Finsi
+          FinSelect
+
+        Cas $i = 2 // Seconde ligne
+          Select 
+            Cas $j = 1 // Première colonne
+              Si $tab[2][1] == '-' alors
+                $rc = Traitement_Ligne(2, 1, "0") - 1 
+                if $rc < $tab[2][1] alors 
+                  $tab[2][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(2,1, "O")
+                if $rc < $tab[2][1] alors 
+                  $tab[2][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+            Cas $j = 2 // Seconde colonne
+              Si $tab[2][2] == '-' alors
+                $rc = Traitement_Ligne(2, 2, "0") - 1 
+                if $rc < $tab[2][2] alors 
+                  $tab[2][2] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(2,2, "0")
+                if $rc < $tab[2][2] alors 
+                  $tab[2][2] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(2, 2, "O")
+              if $rc < $tab[2][2] alors 
+                  $tab[2][2] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+              Finsi
+
+            Cas $j = 3 // Troisième colonne
+              Si $tab[2][3] == '-' alors
+                $rc = Traitement_Ligne(2, 3, "0") - 1 
+                if $rc < $tab[2][3] alors 
+                  $tab[2][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(2,3, "O")
+                if $rc < $tab[2][3] alors 
+                  $tab[2][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+          FinSelect
+
+        Cas $i = 3 // Troisième ligne
+          Select 
+            Cas $j = 1 // Première colonne
+              Si $tab[3][1] == '-' alors
+                $rc = Traitement_Ligne(3, 1, "0") - 1 
+                if $rc < $tab[3][1] alors 
+                  $tab[3][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(3,1, "O")
+                if $rc < $tab[3][1] alors 
+                  $tab[3][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(3, 1, "O")
+              if $rc < $tab[3][1] alors 
+                  $tab[3][1] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+              Finsi
+
+            Cas $j = 2 // Seconde colonne
+              Si $tab[3][2] == '-' alors
+                $rc = Traitement_Ligne(3, 2, "0") - 1 
+                if $rc < $tab[3][2] alors 
+                  $tab[3][2] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(3,2, "O")
+                if $rc < $tab[3][2] alors 
+                  $tab[3][2] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+
+            Cas $j = 3 // Troisième colonne
+              Si $tab[3][3] == '-' alors
+                $rc = Traitement_Ligne(3, 3, "0") - 1 
+                if $rc < $tab[3][3] alors 
+                  $tab[3][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+                $rc = Traitement_Colonne(3,3, "0")
+                if $rc < $tab[3][3] alors 
+                  $tab[3][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(3, 3, "O")
+              if $rc < $tab[3][3] alors 
+                  $tab[3][3] = $rc  // Si l'IA joue dans cette cellule, le coup  
+                                    // sera meilleur que le coup humain 
+                                    // puisque plus proche de la valeur 0 
+              Finsi
+          FinSelect
+      FinSelect
+    FinPour 
+  FinPour
+  
+Finfonction
+
+fonction examiner_coup_humain($Tab = Tableau d'entier de 3*3)
+  // ======================================
+  // X correspond à un coup humain joué
+  // O correspond à un coup ordinateur joué
+  // ======================================
+  
+  // Variables locales :
+  //
+  //$x = Variable permettant de récupérer le nombre de coups avant
+  //    la victoire de l'humain (c'est à dire 3 X en ligne, diagonale ou colonne)
+  
+  Pour $i = 1 to 3
+    Pour $j = 1 to 3
+      Select
+        Cas $i = 1 // Première ligne
+          Select 
+            Cas $j = 1 // Première colonne
+              Si $tab[1][1] == '-' alors
+                $tab[1][1] = Traitement_Ligne(1, 1, "X")
+                $rc = Traitement_Colonne(1,1, "X")
+                if $rc < $tab[1][1] alors 
+                  $tab[1][1] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+                // On va calculer également la diagonale
+                //======================================
+                $rc = Traitement_Diagonale(1, 1, "X")
+                if $rc < $tab[1][1] alors 
+                  $tab[1][1] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant en diagonale 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+            Cas $j = 2 // Seconde colonne
+              Si $tab[1][2] == '-' alors
+                $tab[1][2] = Traitement_Ligne(1, 2, "X")
+                $rc = Traitement_Colonne(1,2, "X")
+                if $rc < $tab[1][2] alors 
+                  $tab[1][2] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+            Cas $j = 3 // Troisième colonne
+              Si $tab[1][3] == '-' alors
+                $tab[1][3] = Traitement_Ligne(1, 3, "X")
+                $rc = Traitement_Colonne(1,3, "X")
+                if $rc < $tab[1][3] alors 
+                  $tab[1][3] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(1, 3, "X")
+              if $rc < $tab[1][3] alors 
+                $tab[1][3] = $rc  // On prend le nombre minimum si 
+                                  // si le joueur humain est plus proche 
+                                  // de la victoire en jouant en diagonale 
+                                  // sur la colonne n°1
+              Finsi
+          FinSelect
+
+        Cas $i = 2 // Seconde ligne
+          Select 
+            Cas $j = 1 // Première colonne
+              Si $tab[2][1] == '-' alors
+                $tab[2][1] = Traitement_Ligne(2, 1, "X")
+                $rc = Traitement_Colonne(2,1, "X")
+                if $rc < $tab[2][1] alors 
+                  $tab[2][1] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+            Cas $j = 2 // Seconde colonne
+              Si $tab[2][2] == '-' alors
+                $tab[2][2] = Traitement_Ligne(2, 2, "X")
+                $rc = Traitement_Colonne(2,2, "X")
+                if $rc < $tab[2][2] alors 
+                  $tab[2][2] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(2, 2, "X")
+              if $rc < $tab[2][2] alors 
+                $tab[2][2] = $rc  // On prend le nombre minimum si 
+                                  // si le joueur humain est plus proche 
+                                  // de la victoire en jouant en diagonale 
+                                  // sur la colonne n°1
+              Finsi
+
+            Cas $j = 3 // Troisième colonne
+              Si $tab[2][3] == '-' alors
+                $tab[2][3] = Traitement_Ligne(2, 3, "X")
+                $rc = Traitement_Colonne(2,3, "X")
+                if $rc < $tab[2][3] alors 
+                  $tab[2][3] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+          FinSelect
+
+        Cas $i = 3 // Troisième ligne
+          Select 
+            Cas $j = 1 // Première colonne
+              Si $tab[3][1] == '-' alors
+                $tab[3][1] = Traitement_Ligne(3, 1, "X")
+                $rc = Traitement_Colonne(3,1, "X")
+                if $rc < $tab[3][1] alors 
+                  $tab[3][1] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(3, 1, "X")
+              if $rc < $tab[3][1] alors 
+                $tab[3][1] = $rc  // On prend le nombre minimum si 
+                                  // si le joueur humain est plus proche 
+                                  // de la victoire en jouant en diagonale 
+                                  // sur la colonne n°1
+              Finsi
+
+            Cas $j = 2 // Seconde colonne
+              Si $tab[3][2] == '-' alors
+                $tab[3][2] = Traitement_Ligne(3, 2, "X")
+                $rc = Traitement_Colonne(3,2, "X")
+                if $rc < $tab[3][2] alors 
+                  $tab[3][2] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+
+            Cas $j = 3 // Troisième colonne
+              Si $tab[3][3] == '-' alors
+                $tab[3][3] = Traitement_Ligne(3, 3, "X")
+                $rc = Traitement_Colonne(3,3, "X")
+                if $rc < $tab[3][3] alors 
+                  $tab[3][3] = $rc  // On prend le nombre minimum si 
+                                    // si le joueur humain est plus proche 
+                                    // de la victoire en jouant verticalement 
+                                    // sur la colonne n°1
+                Finsi
+              Finsi
+              // On va calculer également la diagonale
+              //======================================
+              $rc = Traitement_Diagonale(3, 3, "X")
+              if $rc < $tab[3][3] alors 
+                $tab[3][3] = $rc  // On prend le nombre minimum si 
+                                  // si le joueur humain est plus proche 
+                                  // de la victoire en jouant en diagonale 
+                                  // sur la colonne n°1
+              Finsi
+          FinSelect
+      FinSelect
+    FinPour 
+  FinPour
+finfonction
+
+Fonction Traitement_Ligne($ligne, $Colonne_Calcul, $Comparaison)
+  // $Ligne = Ligne de traitement
+  // $Colonne_Calcul = Référence colonne de la case qui doit être calculé
+  // 
+  // Exemple : Traitement_Ligne(1, 2) correspond à la première ligne et la cellule à calculer est la 2ème
+  
+  // Variables locales:
+  // $rc = permet de renvoyer le nombre de coup avant que le joueur humain 
+  // gagne (c'est à dire avant d'aligner 3 X sur la ligne <$ligne>)
+  Select
+    Cas $Colonne_Calcul = 1
+      Si $tab[$ligne][2] == $Comparaison alors
+        Si $tab[$ligne][3] == $Comparaison alors
+          // Le joueur humain est à un coup de la victoire (-XX)
+          $rc = 1
+        Sinon
+          // Le joueur humain est à 2 coups de la victoire (-X-)
+          $rc = 2
+        FinSi
+      Sinon
+        Si $tab[$ligne][3] == $Comparaison alors 
+          // Le joueur humain est à 2 coups de la victoire (--X)
+          $rc = 2
+        Sinon
+          // Le joueur humain est à 3 coups de la victoire (---)
+          $rc = 3
+        FinSi
+      FinSi
+    
+    Cas $Colonne_Calcul = 2
+      Si $tab[$ligne][1] == $Comparaison alors
+        Si $tab[$ligne][3] == $Comparaison alors
+          // Le joueur humain est à un coup de la victoire (X-X)
+          $rc = 1
+        Sinon
+          // Le joueur humain est à 2 coups de la victoire (X--)
+          $rc = 2
+        FinSi
+      Sinon
+        Si $tab[$ligne][3] == $Comparaison alors 
+          // Le joueur humain est à 2 coups de la victoire (--X)
+          $rc = 2
+        Sinon
+          // Le joueur humain est à 3 coups de la victoire (---)
+          $rc = 3
+        FinSi
+      FinSi
+
+    Cas $Colonne_Calcul = 3
+      Si $tab[$ligne][1] == $Comparaison alors
+        Si $tab[$ligne][2] == $Comparaison alors
+          // Le joueur humain est à un coup de la victoire (XX-)
+          $rc = 1
+        Sinon
+          // Le joueur humain est à 2 coups de la victoire (X--)
+          $rc = 2
+        FinSi
+      Sinon
+        Si $tab[$ligne][2] == $Comparaison alors 
+          // Le joueur humain est à 2 coups de la victoire (-X-)
+          $rc = 2
+        Sinon
+          // Le joueur humain est à 3 coups de la victoire (---)
+          $rc = 3
+        FinSi
+      FinSi
+  FinSelect
+  Retourner $rc
+FinFonction
+
+
+Fonction Traitement_Diagonale($Ligne, $Colonne, $Comparaison)
+  // $Ligne : coordonnée ligne de la cellule calculé 
+  // $Colonne : coordonnée colonne de la cellule calculé
+  
+  // Variables locales:
+  // $rc = permet de renvoyer le nombre de coup avant que le joueur humain 
+  // gagne (c'est à dire avant d'aligner 3 X sur la ligne <$ligne>)
+
+
+  Si $ligne == 1 alors 
+    Si $colonne == 1 alors 
+      Si $tab[2] [2] == $Comparaison alors
+        Si $tab[3] [3] == $Comparaison alors
+          $rc = 1 
+          // Le joueur humain est à 1 coup de la victoire (-XX) en diagonale
+        sinon
+          $rc = 2 
+          // Le joueur humain est à 2 coups de la victoire (-X-) en diagonale
+        Finsi
+      sinon
+        Si $tab[3] [3] == $Comparaison alors
+          $rc = 2
+          // Le joueur humain est à 2 coups de la victoire (--X) en diagonale
+        sinon
+          $rc = 3 
+          // Le joueur humain est à 3 coups de la victoire (---) en diagonale
+        Finsi
+      Finsi
+    sinon
+      // C'est par défaut la colonne 3 puisque la colonne 2 ne peut être 
+      // concerné par le calcul en diagonale
+      // ================================================================
+      Si $tab[1] [1] == $Comparaison alors
+        Si $tab[2] [2] == $Comparaison alors
+          $rc = 1 
+          // Le joueur humain est à 1 coup de la victoire (XX-) en diagonale
+        sinon
+          $rc = 2 
+          // Le joueur humain est à 2 coups de la victoire (X--) en diagonale
+        Finsi
+      sinon
+        Si $tab[2] [2] == $Comparaison alors
+          $rc = 2
+          // Le joueur humain est à 2 coups de la victoire (-X-) en diagonale
+        sinon
+          $rc = 3 
+          // Le joueur humain est à 3 coups de la victoire (---) en diagonale
+        Finsi
+      Finsi
+    finsi
+  Sinon
+    Si $ligne == 2 alors
+      // C'est obligatoirement la cellule $tab[2] [2] seule concernée en ligne 2
+      // pour le calcul en diagonale
+      Si $tab[1] [1] == $Comparaison alors 
+        Si $tab[3] [3] == $Comparaison alors
+          $rc = 1 
+          // Le joueur humain est à 1 coup de la victoire (X-X) en diagonale
+        sinon
+          $rc = 2 
+          // Le joueur humain est à 2 coups de la victoire (X--) en diagonale
+        Finsi
+      sinon
+        Si $tab[3] [3] == $Comparaison alors
+          $rc = 2
+          // Le joueur humain est à 2 coups de la victoire (--X) en diagonale
+        sinon
+          $rc = 3 
+          // Le joueur humain est à 3 coups de la victoire (---) en diagonale
+        Finsi
+      Finsi
+    sinon
+      Si $colonne == 1 alors 
+        Si $tab[2] [2] == $Comparaison
+          Si $tab[1] [3] == $Comparaison alors
+            $rc = 1 
+            // Le joueur humain est à 1 coup de la victoire (-XX) en diagonale
+          sinon
+            $rc = 2 
+            // Le joueur humain est à 2 coups de la victoire (-X-) en diagonale
+          Finsi
+        sinon
+          Si $tab[1] [3] == $Comparaison alors
+            $rc = 2
+            // Le joueur humain est à 2 coups de la victoire (--X) en diagonale
+          sinon
+            $rc = 3 
+            // Le joueur humain est à 3 coups de la victoire (---) en diagonale
+          Finsi
+        Finsi
+      sinon
+        // C'est obligatoirement la colonne 3
+        //===================================
+        Si $tab[1] [1] == $Comparaison alors
+          Si $tab[2] [2] == $Comparaison alors
+            $rc = 1 
+            // Le joueur humain est à 1 coup de la victoire (XX-) en diagonale
+          sinon
+            $rc = 2 
+            // Le joueur humain est à 2 coups de la victoire (X--) en diagonale
+          Finsi
+        sinon
+          Si $tab[2] [2] == $Comparaison alors
+            $rc = 2
+            // Le joueur humain est à 2 coups de la victoire (-X-) en diagonale
+          sinon
+            $rc = 3 
+            // Le joueur humain est à 3 coups de la victoire (---) en diagonale
+          Finsi
+        Finsi
+      finsi
+    finsi
+  Finsi
+return $rc
+FinFonction
+
+
+Fonction Traitement_Colonne($Colonne, $Colonne_Calcul, $Comparaison)
+  // $Colonne = Colonne de traitement
+  // $Colonne_Calcul = Référence ligne de la case qui doit être calculé
+  // 
+  // Exemple : Traitement_Ligne(1, 2) correspond à la première Colonne et la cellule à calculer est la 2ème
+  
+  // Variables locales:
+  // $rc = permet de renvoyer le nombre de coup avant que le joueur humain 
+  // gagne (c'est à dire avant d'aligner 3 X sur la ligne <$ligne>)
+  Select
+    Cas $Colonne_Calcul = 1
+      Si $tab[2][$Colonne] == $Comparaison alors
+        Si $tab[3][$Colonne] == $Comparaison alors
+          // Le joueur humain est à un coup de la victoire (-XX)
+          $rc = 1
+        Sinon
+          // Le joueur humain est à 2 coups de la victoire (-X-)
+          $rc = 2
+        FinSi
+      Sinon
+        Si $tab[3][$Colonne] == $Comparaison alors 
+          // Le joueur humain est à 2 coups de la victoire (--X)
+          $rc = 2
+        Sinon
+          // Le joueur humain est à 3 coups de la victoire (---)
+          $rc = 3
+        FinSi
+      FinSi
+    
+    Cas $Colonne_Calcul = 2
+      Si $tab[1][$Colonne] == $Comparaison alors
+        Si $tab[3][$Colonne] == $Comparaison alors
+          // Le joueur humain est à un coup de la victoire (X-X)
+          $rc = 1
+        Sinon
+          // Le joueur humain est à 2 coups de la victoire (X--)
+          $rc = 2
+        FinSi
+      Sinon
+        Si $tab[3][$Colonne] == $Comparaison alors 
+          // Le joueur humain est à 2 coups de la victoire (--X)
+          $rc = 2
+        Sinon
+          // Le joueur humain est à 3 coups de la victoire (---)
+          $rc = 3
+        FinSi
+      FinSi
+
+    Cas $Colonne_Calcul = 3
+      Si $tab[1][$Colonne] == $Comparaison alors
+        Si $tab[2][$Colonne] == $Comparaison alors
+          // Le joueur humain est à un coup de la victoire (XX-)
+          $rc = 1
+        Sinon
+          // Le joueur humain est à 2 coups de la victoire (X--)
+          $rc = 2
+        FinSi
+      Sinon
+        Si $tab[2][$Colonne] == $Comparaison alors 
+          // Le joueur humain est à 2 coups de la victoire (-X-)
+          $rc = 2
+        Sinon
+          // Le joueur humain est à 3 coups de la victoire (---)
+          $rc = 3
+        FinSi
+      FinSi
+  FinSelect
+  Retourner $rc
+FinFonction
+
